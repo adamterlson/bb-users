@@ -9,14 +9,15 @@ class UserView extends View {
     // Initialize
     this.template = _.template($('#template-users').html());
 
-    this.listenTo(this.collection, 'change', this._onCollectionChange);
+    this.listenTo(this.collection, 'add remove', this._onCollectionChange);
   }
   
   // Backbone
 
   get events() {
     return {
-      'submit #form-create-user': '_onFormCreateUserSubmit'
+      'submit #form-create-user': '_onFormCreateUserSubmit',
+      'click .delete': '_onDeleteClick'
     }; 
   }
 
@@ -40,9 +41,20 @@ class UserView extends View {
     e.preventDefault();
     const name = this.$('input[name=name]').val();
 
-    if (!name) return; // HTML5 validation not supported
+    if (!name) // HTML5 validation not supported
+      return; 
 
-    this.collection.create({ name: name });
+    this.collection.create({ name: name }, { wait: true });
+  }
+
+  _onDeleteClick(e) {
+    const userId = $(e.target).closest('li').data('userId');
+    const user = this.collection.get(userId);
+
+    if (!confirm(`Are you sure you want to delete ${user.get('name')}?`))
+      return;
+
+    user.destroy();
   }
 
   // Backbone Events
