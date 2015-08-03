@@ -11,6 +11,9 @@
   <script type="text/template" id="template-home">
     <h2>List of Users</h2>
     <div id="users-container"></div>
+
+    <h2>List of Groups</h2>
+    <div id="groups-container"></div>
   </script>
 
   <script type="text/template" id="template-users">
@@ -24,7 +27,22 @@
     </ul>
     <form id="form-create-user">
       <input type="text" placeholder="User's Name" name="name" pattern=".{3,}"   required title="Must be at least 3 characters in length" />
-      <input type="submit" value="create" />
+      <input type="submit" value="Create User" />
+    </form>
+  </script>
+
+  <script type="text/template" id="template-groups">
+    <ul>
+      <% groups.forEach((group) => { %>
+        <li data-group-id="<%-group.id%>">
+          <h3><%-group.name%></h3>
+          <a href="javascript:void(0);" class="delete">delete</a>
+        </li>
+      <% }) %>
+    </ul>
+    <form id="form-create-group">
+      <input type="text" placeholder="Group's Name" name="name" pattern=".{3,}"   required title="Must be at least 3 characters in length" />
+      <input type="submit" value="Create Group" />
     </form>
   </script>
 </body>

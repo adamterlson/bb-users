@@ -2,12 +2,12 @@ const $ = require('jquery');
 const _ = require('underscore');
 const { Model, View, Collection } = require('backbone');
 
-class UserView extends View {
+class GroupView extends View {
   constructor(options) {
     super(options);
 
     // Initialize
-    this.template = _.template($('#template-users').html());
+    this.template = _.template($('#template-groups').html());
 
     this.listenTo(this.collection, 'add remove', this._onCollectionChange);
   }
@@ -16,7 +16,7 @@ class UserView extends View {
 
   get events() {
     return {
-      'submit #form-create-user': '_onFormCreateUserSubmit',
+      'submit #form-create-group': '_onFormCreateUserSubmit',
       'click .delete': '_onDeleteClick'
     }; 
   }
@@ -30,8 +30,8 @@ class UserView extends View {
   // Rendering
 
   render() {
-    let users = this.collection.toJSON();
-    this.$el.html(this.template({ users: users }));
+    let groups = this.collection.toJSON();
+    this.$el.html(this.template({ groups: groups }));
     return this;
   }
 
@@ -48,13 +48,13 @@ class UserView extends View {
   }
 
   _onDeleteClick(e) {
-    const userId = $(e.target).closest('li').data('userId');
-    const user = this.collection.get(userId);
+    const groupId = $(e.target).closest('li').data('groupId');
+    const group = this.collection.get(groupId);
 
-    if (!confirm(`Are you sure you want to delete user ${user.get('name')}?`))
+    if (!confirm(`Are you sure you want to delete group ${group.get('name')}?`))
       return;
 
-    user.destroy();
+    group.destroy();
   }
 
   // Backbone Events
@@ -66,4 +66,4 @@ class UserView extends View {
   // Methods
 }
 
-export default UserView;
+export default GroupView;

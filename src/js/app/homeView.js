@@ -3,7 +3,9 @@ const _ = require('underscore');
 const { Model, View, Collection } = require('backbone');
 
 const UsersView = require('./usersView');
+const GroupsView = require('./groupsView');
 const UserCollection = require('./collections/userCollection');
+const GroupCollection = require('./collections/groupCollection');
 
 class HomeView extends View {
   constructor(options) {
@@ -12,6 +14,7 @@ class HomeView extends View {
     // Initialize
     this.template = _.template($('#template-home').html());
     this.userCollection = new UserCollection();
+    this.groupCollection = new GroupCollection();
   }
   
   // Backbone
@@ -23,6 +26,9 @@ class HomeView extends View {
 
     this.userCollection.fetch()
       .then(this.renderUsers.bind(this));
+
+    this.groupCollection.fetch()
+      .then(this.renderGroups.bind(this));
 
     return this;
   }
@@ -38,6 +44,12 @@ class HomeView extends View {
     var usersView = new UsersView({ collection: this.userCollection });
     usersView.bootstrap();
     this.$('#users-container').html(usersView.el);
+  }
+
+  renderGroups() {
+    var groupsView = new GroupsView({ collection: this.groupCollection });
+    groupsView.bootstrap();
+    this.$('#groups-container').html(groupsView.el);
   }
 
   // UI Events
