@@ -3,12 +3,12 @@ module.exports = function () {
     users: [
       {
         id: 1,
-        name: 'sally',
+        name: 'Sally Sue',
         groups: []
       }, 
       {
         id: 2,
-        name: 'bob',
+        name: 'Bobby McGee',
         groups: []
       }
     ],

@@ -4,10 +4,23 @@
   <link rel="stylesheet" href="main.css" type="text/css" />
 </head>
 <body>
-
+  <h1>User &amp; Group Management</h1>
+  <div id="app"></div>
   <script src="app.js"></script>
+
   <script type="text/template" id="template-home">
-    Hello World
+    <h2>List of Users</h2>
+    <div id="users-container"></div>
+  </script>
+
+  <script type="text/template" id="template-users">
+    <ul>
+      <% users.forEach((user) => { %>
+        <li>
+          <h3><%-user.name%></h3>
+        </li>
+      <% }) %>
+    </ul>
   </script>
 </body>
 </html>
