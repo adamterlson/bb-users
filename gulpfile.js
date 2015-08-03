@@ -38,19 +38,12 @@ gulp.task('js', function () {
 gulp.task('stylus', function() {
   gulp.src(paths.css + 'main.styl')
     .pipe(stylus())
-    .pipe(gulp.dest(paths.dist))
-    .pipe(connect.reload());
-});
-
-gulp.task('html', function () {
-  gulp.src(paths.src + '*.html')
-    .pipe(connect.reload());
+    .pipe(gulp.dest(paths.dist));
 });
 
 gulp.task('connect', function() {
   connect.server({
-    root: paths.dist,
-    livereload: true
+    root: paths.dist
   });
 });
 
@@ -60,7 +53,7 @@ gulp.task('move', function () {
 });
  
 gulp.task('watch', function () {
-  gulp.watch([paths.src + '*.html'], ['move', 'html']);
+  gulp.watch([paths.src + '*.html'], ['move']);
   gulp.watch([paths.css + '*.styl'], ['stylus']);
 });
 

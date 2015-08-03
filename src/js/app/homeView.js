@@ -1,9 +1,11 @@
 const $ = require('jquery');
 const _ = require('underscore');
 const { Model, View, Collection } = require('backbone');
+const dragula = require('dragula');
 
 const UsersView = require('./usersView');
 const GroupsView = require('./groupsView');
+const AssignmentView = require('./assignmentView');
 const UserCollection = require('./collections/userCollection');
 const GroupCollection = require('./collections/groupCollection');
 
@@ -24,11 +26,14 @@ class HomeView extends View {
   bootstrap() {
     this.render();
 
-    this.userCollection.fetch()
+    let fetchingUsers = this.userCollection.fetch()
       .then(this.renderUsers.bind(this));
 
-    this.groupCollection.fetch()
+    let fetchingGroups = this.groupCollection.fetch()
       .then(this.renderGroups.bind(this));
+
+    $.when(fetchingUsers, fetchingGroups)
+      .then(this.renderAssignmentView.bind(this));
 
     return this;
   }
@@ -50,6 +55,17 @@ class HomeView extends View {
     var groupsView = new GroupsView({ collection: this.groupCollection });
     groupsView.bootstrap();
     this.$('#groups-container').html(groupsView.el);
+  }
+
+  renderAssignmentView() {
+    var assignmentView = new AssignmentView({ 
+      userCollection: this.userCollection,
+      groupCollection: this.groupCollection 
+    });
+
+    assignmentView.bootstrap();
+
+    this.$('#assignment-container').html(assignmentView.el);
   }
 
   // UI Events

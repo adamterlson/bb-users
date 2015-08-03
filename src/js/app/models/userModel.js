@@ -4,8 +4,8 @@ class UserModel extends Model {
   constructor(options) {
     super(options);
 
-    // Properties
-    
+    // Initialize
+    this.urlRoot = 'http://localhost:3000/users';
   }
 
   // Backbone Overrides

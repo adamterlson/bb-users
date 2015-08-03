@@ -2,13 +2,12 @@ const { Collection } = require('backbone');
 const UserModel = require('../models/userModel');
 
 class UserCollection extends Collection {
-  constructor(options) {
-    super(options);
-
-    this.url = 'http://localhost:3000/users';
+  constructor() {
+    super();
 
     // Initialize
-    
+    this.url = 'http://localhost:3000/users';
+    this.model = UserModel;
   }
 
   // Backbone Overrides

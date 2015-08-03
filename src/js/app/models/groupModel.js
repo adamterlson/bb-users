@@ -4,11 +4,32 @@ class GroupModel extends Model {
   constructor(options) {
     super(options);
 
-    // Properties
-    
+    // Initialize
+    this.urlRoot = 'http://localhost:3000/groups';
   }
 
   // Backbone Overrides
+
+  defaults() {
+    return {
+      members: []
+    };
+  }
+
+  // Backbone Events
+
+  // API Methods
+
+  addMember(userId) {
+    this.get('members').push(userId);
+    this.save();
+  }
+
+  removeMember(userId) {
+    const members = this.get('members');
+    members.splice(members.indexOf(userId), 1);
+    this.save();
+  }
 
   // Backbone Events
 

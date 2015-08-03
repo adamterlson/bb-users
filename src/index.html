@@ -9,11 +9,16 @@
   <script src="app.js"></script>
 
   <script type="text/template" id="template-home">
-    <h2>List of Users</h2>
-    <div id="users-container"></div>
+    <div class="wrapper">
+      <h2>List of Users</h2>
+      <div id="users-container"></div>
 
-    <h2>List of Groups</h2>
-    <div id="groups-container"></div>
+      <h2>List of Groups</h2>
+      <div id="groups-container"></div>
+
+      <h2>Assign Users Groups</h2>
+      <div id="assignment-container"></div>
+    </div>
   </script>
 
   <script type="text/template" id="template-users">
@@ -44,6 +49,34 @@
       <input type="text" placeholder="Group's Name" name="name" pattern=".{3,}"   required title="Must be at least 3 characters in length" />
       <input type="submit" value="Create Group" />
     </form>
+  </script>
+
+  <script type="text/template" id="template-assignment">
+    <h3>Users</h3>
+    <div class="users-container container">
+      <% users.forEach((user) => { %>
+        <div data-user-id="<%-user.id%>">
+          <%-user.name%>
+        </div>
+      <% }) %>
+    </div>
+    <div>
+      <% groups.forEach((group) => { %>
+        <div>
+          <h3>Group <%-group.name%></h3>
+          <div class="group-member-container container" data-group-id="<%-group.id%>">
+            <% if (group.members) { %>
+              <% group.members.forEach((memberId) => { %>
+                <div data-user-id="<%-memberId%>">
+                  <%-_.findWhere(users, { id: memberId }).name %>
+                  <a href="javascript:void(0);" class="remove-member">remove</a>
+                </div>
+              <% }) %>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+    </div>
   </script>
 </body>
 </html>
