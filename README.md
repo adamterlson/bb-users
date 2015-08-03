@@ -10,7 +10,7 @@ Thank you for this opportunity.  I hope you find this project interesting and I 
 ## Organization
 The code and file structure is organized according to my presentation on the topic: [9 Tips for a clean backbonejs app](http://slides.com/adamterlson/9-tips-for-a-clean-backbonejs-app#/).
 
-##Tests
+## Tests
 I'd be happy to discuss unit testing approaches, I have a lot to say on the matter.  I however excluded tests from this project in the interest of time.
 
 ## ES6 + Backbone

@@ -6,16 +6,19 @@ class UserView extends View {
   constructor(options) {
     super(options);
 
-    // Event Bindings
-    this.events = {
-
-    };
-
     // Initialize
     this.template = _.template($('#template-users').html());
+
+    this.listenTo(this.collection, 'change', this._onCollectionChange);
   }
   
   // Backbone
+
+  get events() {
+    return {
+      'submit #form-create-user': '_onFormCreateUserSubmit'
+    }; 
+  }
 
   // Bootstrap
 
@@ -33,7 +36,20 @@ class UserView extends View {
 
   // UI Events
 
+  _onFormCreateUserSubmit(e) {
+    e.preventDefault();
+    const name = this.$('input[name=name]').val();
+
+    if (!name) return; // HTML5 validation not supported
+
+    this.collection.create({ name: name });
+  }
+
   // Backbone Events
+
+  _onCollectionChange() {
+    this.render();
+  }
 
   // Methods
 }

@@ -9,15 +9,12 @@ class HomeView extends View {
   constructor(options) {
     super(options);
 
-    // Event Bindings
-    this.events = {
-
-    };
-
     // Initialize
     this.template = _.template($('#template-home').html());
     this.userCollection = new UserCollection();
   }
+  
+  // Backbone
 
   // Bootstrap
 

@@ -21,6 +21,10 @@
         </li>
       <% }) %>
     </ul>
+    <form id="form-create-user">
+      <input type="text" placeholder="User's Name" name="name" pattern=".{3,}"   required title="Must be at least 3 characters in length" />
+      <input type="submit" value="create" />
+    </form>
   </script>
 </body>
 </html>
