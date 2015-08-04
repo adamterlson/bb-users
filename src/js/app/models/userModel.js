@@ -10,6 +10,12 @@ class UserModel extends Model {
 
   // Backbone Overrides
 
+  defaults() {
+    return {
+      name: ''
+    };
+  }
+
   destroy() {
     return Model.prototype.destroy.apply(this, arguments);
   }

@@ -12,6 +12,7 @@ class GroupModel extends Model {
 
   defaults() {
     return {
+      name: '',
       members: []
     };
   }

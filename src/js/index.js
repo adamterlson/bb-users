@@ -1,5 +1,4 @@
 const $ = require('jquery');
-const _ = require('underscore');
 const Backbone = require('backbone');
 const HomeView = require('./app/homeView');
 const UserCollection = require('./app/collections/userCollection');
@@ -16,6 +15,4 @@ $(() => {
 
       $('#app').html(homeView.el);
     });
-
-  Backbone.history.start();
 });
