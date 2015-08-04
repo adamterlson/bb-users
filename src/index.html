@@ -4,48 +4,52 @@
   <link rel="stylesheet" href="main.css" type="text/css" />
 </head>
 <body>
-  <h1>User &amp; Group Management</h1>
+  <hgroup>
+    <h1>User &amp; Group Management</h1>
+    <h5>by Adam Terlson</h5>
+  </hgroup>
   <div id="app"></div>
   <script src="app.js"></script>
 
   <script type="text/template" id="template-home">
-    <div id="users-container">
+    <div class="wrap" id="users-container">
     </div>
-    <div id="groups-container">
+    <div class="wrap" id="groups-container">
     </div>
   </script>
 
   <script type="text/template" id="template-users">
-    <h3>Users</h3>
+    <h2>1) Grab a user</h2>
     <% if (users && users.length) { %>
-      <div class="users-container container">
+      <div class="container source-container user-list">
         <% users.forEach((user) => { %>
-          <div data-user-id="<%-user.id%>">
-            <%-user.name%> <a href="javascript:void(0);" class="delete">delete</a>
+          <div class="pill" data-user-id="<%-user.id%>">
+            <%-user.name%> <a href="javascript:void(0);" class="delete delete-user"></a>
           </div>
         <% }) %>
       </div>
     <% } %>
     <form id="form-create-user">
-      <input type="text" placeholder="User's Name" name="name" pattern=".{3,}"   required title="Must be at least 3 characters in length" />
+      <input type="text" placeholder="User's Name" name="name" pattern=".{3,20}"   required title="Must be 3-20 characters in length" />
       <input type="submit" value="Create User" />
     </form>
   </script>
 
   <script type="text/template" id="template-groups">
-    <h3>Groups</h3>
+    <h2>2) Drop 'em in a Group</h2>
     <% groups.forEach((group) => { %>
-      <div data-group-id="<%-group.id%>">
+      <div class="group-item" data-group-id="<%-group.id%>">
         <h3>
           <%-group.name%> 
-          <a href="javascript:void(0);" class="delete">delete</a>
+          <a href="javascript:void(0);" class="delete-group pull-right">delete</a>
         </h3>
-        <div class="group-member-container container" data-group-id="<%-group.id%>">
+        <div class="group-member-list destination-container container" data-group-id="<%-group.id%>">
           <% if (group.members) { %>
             <% group.members.forEach((memberId) => { %>
-              <div data-user-id="<%-memberId%>">
+              <div class="pill" data-user-id="<%-memberId%>">
+                <!-- Shortcut -->
                 <%-_.findWhere(users, { id: memberId }).name %>
-                <a href="javascript:void(0);" class="remove-member">remove</a>
+                <a href="javascript:void(0);" class="delete remove-member"></a>
               </div>
             <% }) %>
           <% } %>
@@ -54,7 +58,7 @@
     <% }) %>
 
     <form id="form-create-group">
-      <input type="text" placeholder="Group's Name" name="name" pattern=".{3,}"   required title="Must be at least 3 characters in length" />
+      <input type="text" placeholder="Group's Name" name="name" pattern=".{3,20}"   required title="Must be 3-20 characters in length" />
       <input type="submit" value="Create Group" />
     </form>
   </script>

@@ -19,7 +19,7 @@ class GroupView extends View {
   get events() {
     return {
       'submit #form-create-group': '_onFormCreateUserSubmit',
-      'click .delete': '_onDeleteClick',
+      'click .delete-group': '_onDeleteClick',
       'click .remove-member': '_onRemoveMemberClick'
     }; 
   }

@@ -1,29 +1,123 @@
+*
+  box-sizing border-box
+  
 body
   font 12px Helvetica, Arial, sans-serif
   padding 0 40px
-
-*
-  box-sizing border-box;
-
-.container 
-  background-color rgba(0, 0, 0, 0.2)
-  min-height 150px
-  padding 10px
   
-.user-item
-  border 1px solid #ddd;
-  padding 5px
-  background-color rgba(0, 0, 0, 0.2)
+h1,h2,h3,h4,h5
+  font-weight normal
+
+form
+  clear both
+  padding 20px 0
+
+input[type=text]
+  padding 5px 10px
+
+input[type=submit]
+  font-size 14pt
+
+a 
+  color rgb(242, 92, 5)
+  text-decoration none
+  
+hgroup
+  margin 40px 0
+  h1
+    margin-bottom 5px
+  h5
+    margin-top 0
+
+.wrap 
+  padding-left 15px
+  
+  h2
+    margin-left -15px
     
+.container 
+  min-height 75px
+  line-height 20px
+  padding 10px
+  position relative
+
+.pill
+  transition all 200ms linear
+  background-color rgba(13,213,252,0.2)
   
-.pull-left
-  float left;
+  &.highlight
+    background: rgba(243,243,21,0.4);
+  
+  &.gu-mirror, &.gu-transit
+    background-color rgba(13,213,252,0.2)
+  
+.pill, .gu-mirror
+  border-radius 10px
+  border 1px solid #ddd
+  margin 5px
+  color #0099cc
+  cursor pointer
+  padding 6px 30px 6px 8px
+  display inline-block
+  position relative
+  
+.destination-container
+  border 5px dashed #ccc
+  transition all 500ms linear
+  
+  &.ex-over 
+    border-color rgba(4,217,96,0.8)
+  
+  .pill
+    cursor default
+    
+    .delete
+      color: rgba(5, 141, 242, 1);        
+
+.group-item
+  display inline-block
+  width 300px
+  margin-right 25px
+  float: left
+
+.delete 
+  background-color rgba(255,255,255,0.8)
+  border-radius 10px
+  border 1px solid rgba(0,0,0,0.1)
+  padding 3px 2px
+  display block
+  text-align center
+  width w = 20px
+  height w
+  line-height w
+  position absolute
+  right 0
+  top 50%
+  margin-right 2px
+  margin-top -(w / 2)
+  
+  &:before 
+    content 'X'
+    font-size 7pt
+    position absolute;
+    top 50%
+    left 50%
+    width w
+    height w
+    margin-left -(w / 2)
+    margin-top -(w / 2)
+
+.pull-right
+  float right
+
+/* 
+ * These !important flags came from Dragula 
+ */
 
 .gu-mirror
   position fixed !important
   margin 0 !important
   z-index 9999 !important
-  padding 5px
   opacity 0.8
 
 .gu-hide

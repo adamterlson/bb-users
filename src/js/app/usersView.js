@@ -19,7 +19,7 @@ class UserView extends View {
   get events() {
     return {
       'submit #form-create-user': '_onFormCreateUserSubmit',
-      'click .delete': '_onDeleteClick'
+      'click .delete-user': '_onDeleteClick'
     }; 
   }
 
@@ -45,9 +45,6 @@ class UserView extends View {
     e.preventDefault();
     const name = this.$('input[name=name]').val();
 
-    if (!name) // HTML5 validation not supported
-      return; 
-
     this.userCollection.create({ name: name }, { wait: true });
   }
 
@@ -67,7 +64,7 @@ class UserView extends View {
   // Methods
 
   _deleteUser(user) {
-    if (!confirm(`Are you sure you want to delete user ${user.get('name')}?`))
+    if (!confirm(`Are you sure you want to delete user ${user.get('name')}?  This will also delete ${user.get('name')} from all groups.`))
       return;
 
     return $.when.apply($, this.groupCollection.map(group => group.removeMember(user.id)))
