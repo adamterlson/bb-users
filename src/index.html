@@ -9,27 +9,23 @@
   <script src="app.js"></script>
 
   <script type="text/template" id="template-home">
-    <div class="wrapper">
-      <h2>List of Users</h2>
-      <div id="users-container"></div>
-
-      <h2>List of Groups</h2>
-      <div id="groups-container"></div>
-
-      <h2>Assign Users Groups</h2>
-      <div id="assignment-container"></div>
+    <div id="users-container">
+    </div>
+    <div id="groups-container">
     </div>
   </script>
 
   <script type="text/template" id="template-users">
-    <ul>
-      <% users.forEach((user) => { %>
-        <li data-user-id="<%-user.id%>">
-          <h3><%-user.name%></h3>
-          <a href="javascript:void(0);" class="delete">delete</a>
-        </li>
-      <% }) %>
-    </ul>
+    <h3>Users</h3>
+    <% if (users && users.length) { %>
+      <div class="users-container container">
+        <% users.forEach((user) => { %>
+          <div data-user-id="<%-user.id%>">
+            <%-user.name%> <a href="javascript:void(0);" class="delete">delete</a>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
     <form id="form-create-user">
       <input type="text" placeholder="User's Name" name="name" pattern=".{3,}"   required title="Must be at least 3 characters in length" />
       <input type="submit" value="Create User" />
@@ -37,46 +33,30 @@
   </script>
 
   <script type="text/template" id="template-groups">
-    <ul>
-      <% groups.forEach((group) => { %>
-        <li data-group-id="<%-group.id%>">
-          <h3><%-group.name%></h3>
+    <h3>Groups</h3>
+    <% groups.forEach((group) => { %>
+      <div data-group-id="<%-group.id%>">
+        <h3>
+          <%-group.name%> 
           <a href="javascript:void(0);" class="delete">delete</a>
-        </li>
-      <% }) %>
-    </ul>
+        </h3>
+        <div class="group-member-container container" data-group-id="<%-group.id%>">
+          <% if (group.members) { %>
+            <% group.members.forEach((memberId) => { %>
+              <div data-user-id="<%-memberId%>">
+                <%-_.findWhere(users, { id: memberId }).name %>
+                <a href="javascript:void(0);" class="remove-member">remove</a>
+              </div>
+            <% }) %>
+          <% } %>
+        </div>
+      </div>
+    <% }) %>
+
     <form id="form-create-group">
       <input type="text" placeholder="Group's Name" name="name" pattern=".{3,}"   required title="Must be at least 3 characters in length" />
       <input type="submit" value="Create Group" />
     </form>
-  </script>
-
-  <script type="text/template" id="template-assignment">
-    <h3>Users</h3>
-    <div class="users-container container">
-      <% users.forEach((user) => { %>
-        <div data-user-id="<%-user.id%>">
-          <%-user.name%>
-        </div>
-      <% }) %>
-    </div>
-    <div>
-      <% groups.forEach((group) => { %>
-        <div>
-          <h3>Group <%-group.name%></h3>
-          <div class="group-member-container container" data-group-id="<%-group.id%>">
-            <% if (group.members) { %>
-              <% group.members.forEach((memberId) => { %>
-                <div data-user-id="<%-memberId%>">
-                  <%-_.findWhere(users, { id: memberId }).name %>
-                  <a href="javascript:void(0);" class="remove-member">remove</a>
-                </div>
-              <% }) %>
-            <% } %>
-          </div>
-        </div>
-      <% }) %>
-    </div>
   </script>
 </body>
 </html>

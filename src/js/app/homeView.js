@@ -5,9 +5,6 @@ const dragula = require('dragula');
 
 const UsersView = require('./usersView');
 const GroupsView = require('./groupsView');
-const AssignmentView = require('./assignmentView');
-const UserCollection = require('./collections/userCollection');
-const GroupCollection = require('./collections/groupCollection');
 
 class HomeView extends View {
   constructor(options) {
@@ -15,8 +12,11 @@ class HomeView extends View {
 
     // Initialize
     this.template = _.template($('#template-home').html());
-    this.userCollection = new UserCollection();
-    this.groupCollection = new GroupCollection();
+    this.userCollection = options.userCollection;
+    this.groupCollection = options.groupCollection;
+
+    this.listenTo(this.userCollection, 'add remove sync', this._onUserCollectionSync);
+    this.listenTo(this.groupCollection, 'add remove sync', this._onGroupCollectionSync);
   }
   
   // Backbone
@@ -26,15 +26,6 @@ class HomeView extends View {
   bootstrap() {
     this.render();
 
-    let fetchingUsers = this.userCollection.fetch()
-      .then(this.renderUsers.bind(this));
-
-    let fetchingGroups = this.groupCollection.fetch()
-      .then(this.renderGroups.bind(this));
-
-    $.when(fetchingUsers, fetchingGroups)
-      .then(this.renderAssignmentView.bind(this));
-
     return this;
   }
 
@@ -42,39 +33,78 @@ class HomeView extends View {
 
   render() {
     this.$el.html(this.template());
+
+    this.renderUsers()
+    this.renderGroups();
+    this.renderDragula();
+
     return this;
   }
 
   renderUsers() {
-    var usersView = new UsersView({ collection: this.userCollection });
+    var usersView = new UsersView({ userCollection: this.userCollection, groupCollection: this.groupCollection });
     usersView.bootstrap();
     this.$('#users-container').html(usersView.el);
   }
 
   renderGroups() {
-    var groupsView = new GroupsView({ collection: this.groupCollection });
+    var groupsView = new GroupsView({ userCollection: this.userCollection, groupCollection: this.groupCollection });
     groupsView.bootstrap();
     this.$('#groups-container').html(groupsView.el);
   }
 
-  renderAssignmentView() {
-    var assignmentView = new AssignmentView({ 
-      userCollection: this.userCollection,
-      groupCollection: this.groupCollection 
-    });
+  renderDragula() {
+    const self = this;
+    const containers = this.$('.users-container')
+      .add(this.$('.group-member-container'))
+      .toArray();
 
-    assignmentView.bootstrap();
-
-    this.$('#assignment-container').html(assignmentView.el);
+    dragula(containers, {
+      copy: true,
+      accepts: (el, target, source, sibling) => {
+        const groupId = parseInt(target.dataset.groupId, 10);
+        const userId = parseInt(el.dataset.userId);
+        return groupId && 
+               userId &&
+               target !== source && 
+               !self._groupContainsUser(groupId, userId);
+      },
+      moves: (el, container, handle) => {
+        return container.classList.contains('users-container')
+      }
+    })
+      .on('drop', this._onDragulaDrop.bind(this));
   }
 
   // UI Events
 
+  _onDragulaDrop(el, target) {
+    if (!target) return;
+
+    const groupId = parseInt(target.dataset.groupId, 10);
+    const userId = parseInt(el.dataset.userId);
+    
+    this.groupCollection.get(groupId).addMember(userId);
+    this.render();
+  }
+
   // Backbone Events
+
+  _onUserCollectionSync() {
+    this.render();
+  }
+
+  _onGroupCollectionSync() {
+    this.render();
+  }
 
   // Util
 
-  // API Methods
+  _groupContainsUser(groupId, userId) {
+    const group = this.groupCollection.get(groupId);
+    const groupMembers = group.get('members');
+    return groupMembers && groupMembers.indexOf(userId) >= 0;
+  }
 }
 
 export default HomeView;

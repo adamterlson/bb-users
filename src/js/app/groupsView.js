@@ -8,8 +8,10 @@ class GroupView extends View {
 
     // Initialize
     this.template = _.template($('#template-groups').html());
+    this.userCollection = options.userCollection;
+    this.groupCollection = options.groupCollection;
 
-    this.listenTo(this.collection, 'add remove', this._onCollectionChange);
+    this.listenTo(this.groupCollection, 'add remove', this._onGroupsCollectionChange);
   }
   
   // Backbone
@@ -17,7 +19,8 @@ class GroupView extends View {
   get events() {
     return {
       'submit #form-create-group': '_onFormCreateUserSubmit',
-      'click .delete': '_onDeleteClick'
+      'click .delete': '_onDeleteClick',
+      'click .remove-member': '_onRemoveMemberClick'
     }; 
   }
 
@@ -30,8 +33,10 @@ class GroupView extends View {
   // Rendering
 
   render() {
-    let groups = this.collection.toJSON();
-    this.$el.html(this.template({ groups: groups }));
+    this.$el.html(this.template({ 
+      groups: this.groupCollection.toJSON(),
+      users: this.userCollection.toJSON()
+    }));
     return this;
   }
 
@@ -44,12 +49,12 @@ class GroupView extends View {
     if (!name) // HTML5 validation not supported
       return; 
 
-    this.collection.create({ name: name }, { wait: true });
+    this.groupCollection.create({ name: name }, { wait: true });
   }
 
   _onDeleteClick(e) {
-    const groupId = $(e.target).closest('li').data('groupId');
-    const group = this.collection.get(groupId);
+    const groupId = $(e.target).closest('[data-group-id]').data('groupId');
+    const group = this.groupCollection.get(groupId);
 
     if (group.get('members').length !== 0) {
       return alert('Cannot delete group with members. Remove all members and try again.');
@@ -60,9 +65,17 @@ class GroupView extends View {
     group.destroy();
   }
 
+  _onRemoveMemberClick(e) {
+    const $target = $(e.currentTarget);
+    const groupId =$target.closest('[data-group-id]').data('groupId');
+    const userId = $target.closest('[data-user-id]').data('userId');
+
+    this.groupCollection.get(groupId).removeMember(userId);
+  }
+
   // Backbone Events
 
-  _onCollectionChange() {
+  _onGroupsCollectionChange() {
     this.render();
   }
 

@@ -27,8 +27,12 @@ class GroupModel extends Model {
 
   removeMember(userId) {
     const members = this.get('members');
-    members.splice(members.indexOf(userId), 1);
-    return this.save();
+    const index = members.indexOf(userId);
+
+    if (index >= 0) {
+      members.splice(index, 1);
+      return this.save();
+    }
   }
 
   // Backbone Events

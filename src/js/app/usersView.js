@@ -8,8 +8,10 @@ class UserView extends View {
 
     // Initialize
     this.template = _.template($('#template-users').html());
+    this.userCollection = options.userCollection;
+    this.groupCollection = options.groupCollection;
 
-    this.listenTo(this.collection, 'add remove', this._onCollectionChange);
+    this.listenTo(this.userCollection, 'add remove', this._onUsersCollectionChange);
   }
   
   // Backbone
@@ -30,8 +32,10 @@ class UserView extends View {
   // Rendering
 
   render() {
-    let users = this.collection.toJSON();
-    this.$el.html(this.template({ users: users }));
+    this.$el.html(this.template({ 
+      groups: this.groupCollection.toJSON(),
+      users: this.userCollection.toJSON()
+    }));
     return this;
   }
 
@@ -44,26 +48,31 @@ class UserView extends View {
     if (!name) // HTML5 validation not supported
       return; 
 
-    this.collection.create({ name: name }, { wait: true });
+    this.userCollection.create({ name: name }, { wait: true });
   }
 
   _onDeleteClick(e) {
-    const userId = $(e.target).closest('li').data('userId');
-    const user = this.collection.get(userId);
+    const userId = $(e.target).closest('[data-user-id]').data('userId');
+    const user = this.userCollection.get(userId);
 
-    if (!confirm(`Are you sure you want to delete user ${user.get('name')}?`))
-      return;
-
-    user.destroy();
+    this._deleteUser(user);
   }
 
   // Backbone Events
 
-  _onCollectionChange() {
+  _onUsersCollectionChange() {
     this.render();
   }
 
   // Methods
+
+  _deleteUser(user) {
+    if (!confirm(`Are you sure you want to delete user ${user.get('name')}?`))
+      return;
+
+    return $.when.apply($, this.groupCollection.map(group => group.removeMember(user.id)))
+      .then(() => user.destroy());
+  }
 }
 
 export default UserView;
