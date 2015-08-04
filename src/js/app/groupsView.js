@@ -51,8 +51,11 @@ class GroupView extends View {
     const groupId = $(e.target).closest('li').data('groupId');
     const group = this.collection.get(groupId);
 
-    if (!confirm(`Are you sure you want to delete group ${group.get('name')}?`))
+    if (group.get('members').length !== 0) {
+      return alert('Cannot delete group with members. Remove all members and try again.');
+    } else if (!confirm(`Are you sure you want to delete group ${group.get('name')}?`)) {
       return;
+    }
 
     group.destroy();
   }

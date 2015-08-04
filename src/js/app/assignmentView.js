@@ -12,8 +12,8 @@ class AssignmentView extends View {
     this.userCollection = options.userCollection;
     this.groupCollection = options.groupCollection;
 
-    this.listenTo(this.userCollection, 'sync', this._onUserCollectionSync);
-    this.listenTo(this.groupCollection, 'sync', this._onGroupCollectionSync);
+    this.listenTo(this.userCollection, 'add remove sync', this._onUserCollectionSync);
+    this.listenTo(this.groupCollection, 'add remove sync', this._onGroupCollectionSync);
   }
   
   // Backbone

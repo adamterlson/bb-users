@@ -15,3 +15,6 @@ I'd be happy to discuss unit testing approaches, I have a lot to say on the matt
 
 ## ES6 + Backbone
 This was my first opportunity to combine Backbone with ES6.  It was fun to learn something new here and to adapt my old strategies into a more ES6-y way of doing things.
+
+## Group Delete
+I've assumed an API that impelements the business logic as well, for example not allowing deletes on a group that contains members.  However, in the interest of time, I have merely implemented the logic from a front-end perspective.

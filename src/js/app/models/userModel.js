@@ -10,6 +10,10 @@ class UserModel extends Model {
 
   // Backbone Overrides
 
+  destroy() {
+    return Model.prototype.destroy.apply(this, arguments);
+  }
+
   // Backbone Events
 
   // API Methods

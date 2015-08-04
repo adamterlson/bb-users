@@ -22,13 +22,13 @@ class GroupModel extends Model {
 
   addMember(userId) {
     this.get('members').push(userId);
-    this.save();
+    return this.save();
   }
 
   removeMember(userId) {
     const members = this.get('members');
     members.splice(members.indexOf(userId), 1);
-    this.save();
+    return this.save();
   }
 
   // Backbone Events
