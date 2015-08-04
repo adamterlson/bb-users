@@ -16,6 +16,10 @@ class GroupCollection extends Collection {
   model() {
     return GroupModel;
   }
+  
+  comparator(model) {
+    return model.get('name');
+  }
 
   // Backbone Events
 

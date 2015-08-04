@@ -12,6 +12,10 @@ class UserCollection extends Collection {
 
   // Backbone Overrides
 
+  comparator(model) {
+    return model.get('name');
+  }
+
   // Backbone Events
 
   // API Methods

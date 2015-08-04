@@ -19,7 +19,7 @@
   </script>
 
   <!-- Underscore... Sigh -->
-  
+
   <script type="text/template" id="template-users">
     <h2>1) Grab a user</h2>
     <% if (users && users.length) { %>
@@ -47,10 +47,13 @@
         </h3>
         <div class="group-member-list destination-container container" data-group-id="<%-group.id%>">
           <% if (group.members) { %>
-            <% group.members.forEach((memberId) => { %>
-              <div class="pill" data-user-id="<%-memberId%>">
-                <!-- Shortcut -->
-                <%-_.findWhere(users, { id: memberId }).name %>
+            <!-- Time-saver, should go in view -->
+            <% _.sortBy(
+                group.members.map(memberId => _.findWhere(users, { id: memberId })), 
+                'name')
+            .forEach((member) => { %>
+              <div class="pill" data-user-id="<%-member.id%>">
+                <%-member.name %>
                 <a href="javascript:void(0);" class="delete remove-member"></a>
               </div>
             <% }) %>
