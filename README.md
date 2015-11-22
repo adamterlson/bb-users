@@ -7,5 +7,3 @@ Testing out Backbone and ES6
 2) `npm run database`
 
 3) `npm start`
-
-4) `open index.html`
