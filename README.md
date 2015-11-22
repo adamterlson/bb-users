@@ -1,5 +1,5 @@
 #Basic user/group management app
-This will serve as a code comparison with a react implementation of the same.
+Testing out BackBone and ES6
 
 ##Running the app
 1) `npm install`
